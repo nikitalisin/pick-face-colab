@@ -2,7 +2,7 @@
 
 Choose a face, preview its mask, and generate a video from a source clip and separate speech audio, all inside Colab.
 
-[Open PickFace v5.7 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_7_EN.ipynb)
+[Open PickFace v5.8 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_8_EN.ipynb)
 
 1. Use a fresh A100 GPU runtime and run setup steps 1–6.
 2. Step 2 downloads and verifies the source archive automatically. No manual archive upload or Google Drive is required.
@@ -66,3 +66,9 @@ Detect faces, Preview selected face and Generate video now display an overall pr
 - Up to 20 seconds / 500 input frames at 25 FPS; shorter video or audio still limits the result. Wan may trim a few frames.
 
 CPU checks passed for progress snapshots, frame reporting, cached dependencies, recovery, endpoint outages, failures, face selection and graph settings. The new widget display and full 20-second GPU generation still need a Colab run. Use a fresh A100 runtime.
+
+## Tilted-face speech mask (v5.8)
+
+User diagnostic overlays confirmed that the previous lower-face rectangle missed the mouth of a lying woman and covered the cheek/ear/neck instead. The speech gate now takes the complete selected SAM face mask directly, matching the face-selection preview. The lower-band node is removed from the submitted generation graph. Missing selected faces remain empty all the way to the speech gate.
+
+The 20-second cap, both audio scales at 1.2, orientation handling, progress bars and window alignment remain as in v5.7. Graph regression checks passed; improved articulation and full-face motion still require a generated-video comparison.
