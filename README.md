@@ -2,7 +2,7 @@
 
 Choose a face, preview its mask, and generate a video from a source clip and separate speech audio, all inside Colab.
 
-[Open PickFace v5.6 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_6_EN.ipynb)
+[Open PickFace v5.7 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_7_EN.ipynb)
 
 1. Use a fresh A100 GPU runtime and run setup steps 1–6.
 2. Step 2 downloads and verifies the source archive automatically. No manual archive upload or Google Drive is required.
@@ -38,16 +38,16 @@ For 16:9 / 9:16 / square inputs:
 Square frames contain more pixels and may use more GPU memory than widescreen frames at the same longest side.
 Changing video or resolution requires detecting and selecting the face again. BF16 + SDPA remain enabled.
 
-## Fifteen-second test (v5.6)
+## Twenty-second test (v5.7)
 
-Processes up to 15 seconds at 25 FPS, capped at 375 input frames. Supply video and speech audio at least 15 seconds long.
+Processes up to 20 seconds at 25 FPS, capped at 500 input frames. Supply video and speech audio at least 20 seconds long.
 Wan may trim a few frames; short inputs are not extended.
 The sampler window remains 121 frames, motion 9, drop 8. The v5.4 mask alignment fix and download retries are retained.
 Use a fresh runtime.
 
 A user confirmed a successful 10-second v5.4 test without a visible window seam; peak GPU memory was not measured.
 V5.5 passed offline graph and decoder checks for landscape, portrait and square inputs.
-Full 15-second generation, new output shapes and peak A100 memory still need validation.
+Full 20-second generation, new output shapes and peak A100 memory still need validation.
 
 ## Face selection fix (v5.6)
 
@@ -55,4 +55,14 @@ All detected tracks are selectable, including faces that disappear in some frame
 
 Use a fresh runtime and run Detect faces again. Read the numbers from the new preview; do not reuse IDs from an earlier run. Inspect multiple frames: SAM may still lose a track or assign a new ID after an interruption.
 
-CPU regression checks exercise disappearance, changing mask order, new tracks and the actual frozen SAM output node. The user video still needs a Colab run with this version. The 15-second cap, automatic orientation and generation settings are unchanged.
+CPU regression checks exercise disappearance, changing mask order, new tracks and the actual frozen SAM output node. The user video still needs a Colab run with this version. Automatic orientation and the v5.6 face-selection fix are retained in v5.7.
+
+## Progress and audio settings (v5.7)
+
+Detect faces, Preview selected face and Generate video now display an overall progress bar and a current-stage bar. SAM reports actual processed frames; generation uses ComfyUI step progress across windows. Recover last job resumes progress polling. Overall percentage is estimated from completed stages, not time remaining. It can pause during model loading or a long sampling step. Only successful server completion produces 100%; failures are shown separately.
+
+- `audio_scale = 1.2`
+- `audio_cfg_scale = 1.2`
+- Up to 20 seconds / 500 input frames at 25 FPS; shorter video or audio still limits the result. Wan may trim a few frames.
+
+CPU checks passed for progress snapshots, frame reporting, cached dependencies, recovery, endpoint outages, failures, face selection and graph settings. The new widget display and full 20-second GPU generation still need a Colab run. Use a fresh A100 runtime.
