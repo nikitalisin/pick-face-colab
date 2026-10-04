@@ -2,7 +2,7 @@
 
 Choose a face, preview its mask, and generate a video from a source clip and separate speech audio, all inside Colab.
 
-[Open PickFace v5.9 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_9_EN.ipynb)
+[Open PickFace v5.10 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_10_EN.ipynb)
 
 1. Use a fresh A100 GPU runtime and run setup steps 1–6.
 2. Step 2 downloads and verifies the source archive automatically. No manual archive upload or Google Drive is required.
@@ -75,6 +75,14 @@ The 20-second cap, both audio scales at 1.2, orientation handling, progress bars
 
 ## Thirty-second test (v5.9)
 
-The current notebook processes up to **30 seconds at 25 FPS**, capped at **750 input frames**, with audio capped at **30 seconds**. Supply video and speech audio at least 30 seconds long; shorter inputs are not extended and Wan may trim a few frames.
+V5.9 processes up to **30 seconds at 25 FPS**, capped at **750 input frames**, with audio capped at **30 seconds**. Supply video and speech audio at least 30 seconds long; shorter inputs are not extended and Wan may trim a few frames.
 
 The v5.8 full selected-face mask, audio_scale=1.2, audio_cfg_scale=1.2, automatic orientation, progress reporting and 121-frame sampler window (motion 9, drop 8) are preserved. Use a fresh A100 runtime and repeat face detection and selection. Offline checks cover the generated graphs and embedded Python syntax. Full 30-second GPU generation and peak memory still need validation.
+
+## Forty-five-second test (v5.10)
+
+The current notebook processes up to **45 seconds at 25 FPS**, capped at **1125 input frames**, with audio capped at **45 seconds**. Supply video and speech audio at least 45 seconds long. Short inputs are not extended; Wan may trim a few frames. Start a fresh A100 runtime, run setup steps 1–6, and import files and repeat face detection/selection in steps 7–8.
+
+The selected-face mask, both audio scales at 1.2, orientation, progress bars and sampler window 121 / motion 9 / drop 8 are preserved. Offline validation compares detect, preview and generation graphs with v5.9 and checks notebook and embedded Python syntax. Full 45-second generation and peak pipeline memory have not yet been tested.
+
+The v5.9 user test completed successfully: 23.88 seconds, 597 frames, 1280×720 at 25 FPS on an A100 40 GB. Generation took 21:02 after detection and preview. Sampling reported 18.291 GB allocated and 24.281 GB reserved; these are not full-pipeline peak measurements. The post-run snapshot showed about 11.4 GB of free system RAM out of 89.6 GB. The supplied MP4 confirms duration and dimensions; sampled frames show mouth movement at the beginning and around 11 and 18 seconds. The face is covered by a hand near the end. Audio synchronization and window seams were not systematically reviewed.
