@@ -2,7 +2,7 @@
 
 Choose a face, preview its mask, and generate a video from a source clip and separate speech audio, all inside Colab.
 
-[Open PickFace v5.8 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_8_EN.ipynb)
+[Open PickFace v5.9 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_9_EN.ipynb)
 
 1. Use a fresh A100 GPU runtime and run setup steps 1–6.
 2. Step 2 downloads and verifies the source archive automatically. No manual archive upload or Google Drive is required.
@@ -72,3 +72,9 @@ CPU checks passed for progress snapshots, frame reporting, cached dependencies, 
 User diagnostic overlays confirmed that the previous lower-face rectangle missed the mouth of a lying woman and covered the cheek/ear/neck instead. The speech gate now takes the complete selected SAM face mask directly, matching the face-selection preview. The lower-band node is removed from the submitted generation graph. Missing selected faces remain empty all the way to the speech gate.
 
 The 20-second cap, both audio scales at 1.2, orientation handling, progress bars and window alignment remain as in v5.7. Graph regression checks passed; improved articulation and full-face motion still require a generated-video comparison.
+
+## Thirty-second test (v5.9)
+
+The current notebook processes up to **30 seconds at 25 FPS**, capped at **750 input frames**, with audio capped at **30 seconds**. Supply video and speech audio at least 30 seconds long; shorter inputs are not extended and Wan may trim a few frames.
+
+The v5.8 full selected-face mask, audio_scale=1.2, audio_cfg_scale=1.2, automatic orientation, progress reporting and 121-frame sampler window (motion 9, drop 8) are preserved. Use a fresh A100 runtime and repeat face detection and selection. Offline checks cover the generated graphs and embedded Python syntax. Full 30-second GPU generation and peak memory still need validation.
