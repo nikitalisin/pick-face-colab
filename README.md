@@ -2,13 +2,13 @@
 
 Choose a face, preview its mask, and generate a video from a source clip and separate speech audio, all inside Colab.
 
-[Open PickFace v5.10 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_10_EN.ipynb)
+[Open PickFace v5.11 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_11_EN.ipynb)
 
 1. Use a fresh A100 GPU runtime and run setup steps 1–6.
 2. Step 2 downloads and verifies the source archive automatically. No manual archive upload or Google Drive is required.
 3. Upload your video and speech audio via the Colab **Files** sidebar. In step 7, paste each **Copy path** value, choose 480p or 720p, and click **Use files**.
-4. In step 8, click **Detect faces**, choose **Face ID**, then **Preview selected face**. Use **Frame** to inspect tracking.
-5. Click **Generate video**. Play or download the result in step 9.
+4. In step 8, select **Detect faces**, then run **step 8b**. Choose **Face ID**, select **Preview selected face**, then run **8b** again. Use **Frame** to inspect tracking.
+5. Select **Generate video** in step 8, then run **8b** and leave it executing until completion. Play or download the result in step 9.
 
 The preview starts at the first propagated frame (frame 2 for this workflow). Face IDs are not left-to-right positions.
 
@@ -21,7 +21,7 @@ Archive SHA-256:
 
 BF16 + SDPA were used in the successful v4 A100 generation. Offline checks cover the new controls, graph isolation, selection checks and archive integrity; the full v5.6 Colab run still needs validation.
 
-If a wait is interrupted, use **Recover last job**. If a job fails, use **Download diagnostics** in step 9.
+If a wait is interrupted and the server still exists, select **Recover last job** and run **8b**. If a job fails, use **Download diagnostics** in step 9.
 
 ## Resolution and orientation
 
@@ -86,3 +86,9 @@ The current notebook processes up to **45 seconds at 25 FPS**, capped at **1125 
 The selected-face mask, both audio scales at 1.2, orientation, progress bars and sampler window 121 / motion 9 / drop 8 are preserved. Offline validation compares detect, preview and generation graphs with v5.9 and checks notebook and embedded Python syntax. Full 45-second generation and peak pipeline memory have not yet been tested.
 
 The v5.9 user test completed successfully: 23.88 seconds, 597 frames, 1280×720 at 25 FPS on an A100 40 GB. Generation took 21:02 after detection and preview. Sampling reported 18.291 GB allocated and 24.281 GB reserved; these are not full-pipeline peak measurements. The post-run snapshot showed about 11.4 GB of free system RAM out of 89.6 GB. The supplied MP4 confirms duration and dimensions; sampled frames show mouth movement at the beginning and around 11 and 18 seconds. The face is covered by a hand near the end. Audio synchronization and window seams were not systematically reviewed.
+
+## Explicit execution cell (v5.11)
+
+Buttons in step 8 now select an operation. Step 8b submits and waits for that operation in a regular notebook cell, including detection, preview, generation and recovery. It prints real waiting status at 30-second intervals and surfaces failures or interrupted waits. Requests are consumed once; changing inputs requires selecting the action again. The existing server queue check remains in place.
+
+The 45-second graph and all generation settings remain identical to v5.10. This is not a guaranteed cure for Colab disconnections; Colab's handling of long widget callbacks has not been established. No artificial activity or reconnection scripts are used. Results remain on the runtime disk; deleted runtimes and lost sampling state cannot be recovered with this change. Offline control-flow and syntax checks passed; a full Colab GPU test is pending.
