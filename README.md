@@ -2,13 +2,13 @@
 
 Choose a face, preview its mask, and generate a video from a source clip and separate speech audio, all inside Colab.
 
-[Open PickFace v5.11 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_11_EN.ipynb)
+[Open PickFace v5.12 in Colab](https://colab.research.google.com/github/nikitalisin/pick-face-colab/blob/main/PickFace_Colab_v5_12_EN.ipynb)
 
 1. Use a fresh A100 GPU runtime and run setup steps 1–6.
 2. Step 2 downloads and verifies the source archive automatically. No manual archive upload or Google Drive is required.
 3. Upload your video and speech audio via the Colab **Files** sidebar. In step 7, paste each **Copy path** value, choose 480p or 720p, and click **Use files**.
-4. In step 8, select **Detect faces**, then run **step 8b**. Choose **Face ID**, select **Preview selected face**, then run **8b** again. Use **Frame** to inspect tracking.
-5. Select **Generate video** in step 8, then run **8b** and leave it executing until completion. Play or download the result in step 9.
+4. In step 8, click **Detect faces**, wait for completion, choose **Face ID**, then click **Preview selected face**. Both buttons run directly. Use **Frame** to inspect tracking.
+5. Run **step 8b — Generate video** with its play button and leave it executing until completion. Play or download the result in step 9.
 
 The preview starts at the first propagated frame (frame 2 for this workflow). Face IDs are not left-to-right positions.
 
@@ -21,7 +21,7 @@ Archive SHA-256:
 
 BF16 + SDPA were used in the successful v4 A100 generation. Offline checks cover the new controls, graph isolation, selection checks and archive integrity; the full v5.6 Colab run still needs validation.
 
-If a wait is interrupted and the server still exists, select **Recover last job** and run **8b**. If a job fails, use **Download diagnostics** in step 9.
+If a wait is interrupted and the server still exists, choose **Recover last job** in the dropdown in **8b** and run that cell. If a job fails, use **Download diagnostics** in step 9.
 
 ## Resolution and orientation
 
@@ -92,3 +92,9 @@ The v5.9 user test completed successfully: 23.88 seconds, 597 frames, 1280×720 
 Buttons in step 8 now select an operation. Step 8b submits and waits for that operation in a regular notebook cell, including detection, preview, generation and recovery. It prints real waiting status at 30-second intervals and surfaces failures or interrupted waits. Requests are consumed once; changing inputs requires selecting the action again. The existing server queue check remains in place.
 
 The 45-second graph and all generation settings remain identical to v5.10. This is not a guaranteed cure for Colab disconnections; Colab's handling of long widget callbacks has not been established. No artificial activity or reconnection scripts are used. Results remain on the runtime disk; deleted runtimes and lost sampling state cannot be recovered with this change. Offline control-flow and syntax checks passed; a full Colab GPU test is pending.
+
+## Simplified controls (v5.12)
+
+Detection and selected-face preview run directly from their buttons in step 8 again. Only video generation uses the explicit execution cell 8b. Press that cell's play button after confirming the face preview. There is no pending-action handoff and no code editing is required. The dropdown in 8b also allows recovering the last submitted job while the server survives.
+
+The graph, 45-second cap and model settings are unchanged. Offline checks cover direct button callbacks, generation prerequisites, input invalidation and recovery without resubmission. Long-running Colab execution still needs validation; this change does not guarantee immunity to Colab disconnects or restore lost runtime state.
